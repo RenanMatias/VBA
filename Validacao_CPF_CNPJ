@@ -4,69 +4,40 @@
 'Autor: Luiz Cláudio C. V. Rocha
 '******************************************
 
-Public Function fDigCNPJ(CNPJ As String) As String
+Public Function fCPF(CPF As String) As Boolean
 
-    'Calcula os dígitos verificadores do CNPJ
-    Dim I As Integer
-    Dim intFator As Integer
-    Dim intTotal As Integer
-    Dim intResto
+    'Extrai somente os número da string
+    Dim i As Integer, j As String, numCPF As String
     
-    'Verifica se tem 12 ou 14 dígitos
-    If Not (Len(CNPJ) = 12 Or Len(CNPJ) = 14) Then
-        Exit Function
-        
-    Else
-        'Verifica se é numérico
-        If Not IsNumeric(CNPJ) Then
-            Exit Function
-            
+    For i = 1 To Len(CPF)
+        If Asc(Mid(CPF, i, 1)) < 48 Or _
+           Asc(Mid(CPF, i, 1)) > 57 Then
         Else
-            'Trunca o CNPJ em 12 caracteres
-            CNPJ = Left$(CNPJ, 12)
-            
+            j = j & Mid(CPF, i, 1)
         End If
+        numCPF = j
+    Next
+
+    'Verifica se o CPF é válido
+    Dim strChar As String
+    
+    'Verifica se tem 11 caracteres
+    If Not Len(numCPF) = 11 Then
+        Exit Function
     End If
     
-Inicio:
-    'Percorre as colunas (de trás para frente),
-    'multiplicando por seus respectivos fatores
-    intFator = 2
-    intTotal = 0
-    For I = Len(CNPJ) To 1 Step -1
-    
-        If intFator > 9 Then intFator = 2
-        
-        intTotal = intTotal + ((CInt(Mid(CNPJ, I, 1)) * intFator))
-        intFator = intFator + 1
-    
-    Next I
-    
-    'Obtém o resto da divisão por 11
-    I = intTotal Mod 11
-    'Subtrai 11 do resto
-    I = 11 - I
-    'O dígito verificador é i
-    If I = 10 Or I = 11 Then I = 0
-    
-    'Concatena ao CNPJ
-    CNPJ = CNPJ & CStr(I)
-    
-    If Len(CNPJ) = 13 Then
-        'Calcula o segundo dígito
-        GoTo Inicio
-        
+    'Verifica se o dígito verificador confere
+    strChar = Mid$(numCPF, 10, 2)
+    If fDigCPF(numCPF) = strChar Then
+        fCPF = True
     End If
-    
-    'Retorna os dígitos verificadores
-    fDigCNPJ = Right$(CNPJ, 2)
-    
+
 End Function
 
-Public Function fDigCPF(CPF As String) As String
+Private Function fDigCPF(CPF As String) As String
 
     'Calcula os dígitos verificadores do CPF
-    Dim I As Integer
+    Dim i As Integer
     Dim intFator As Integer
     Dim intTotal As Integer
     Dim intResto
@@ -93,21 +64,21 @@ Inicio:
     intFator = 2
     intTotal = 0
     
-    For I = Len(CPF) To 1 Step -1
+    For i = Len(CPF) To 1 Step -1
     
-        intTotal = intTotal + ((CInt(Mid(CPF, I, 1)) * intFator))
+        intTotal = intTotal + ((CInt(Mid(CPF, i, 1)) * intFator))
         intFator = intFator + 1
         
-    Next I
+    Next i
     
     'Obtém o resto da divisão por 11
-    I = intTotal Mod 11
+    i = intTotal Mod 11
     'Subtrai 11 do resto
-    I = 11 - I
+    i = 11 - i
     'O dígito verificador é i
-    If I = 10 Or I = 11 Then I = 0
+    If i = 10 Or i = 11 Then i = 0
     'Concatena ao CPF
-    CPF = CPF & CStr(I)
+    CPF = CPF & CStr(i)
     
     If Len(CPF) = 10 Then
     
@@ -142,23 +113,61 @@ Public Function fCNPJ(CNPJ As String) As Boolean
     
 End Function
 
-Public Function fCPF(CPF As String) As Boolean
+Private Function fDigCNPJ(CNPJ As String) As String
 
-    'Verifica se o CPF é válido
-    Dim strChar As String
+    'Calcula os dígitos verificadores do CNPJ
+    Dim i As Integer
+    Dim intFator As Integer
+    Dim intTotal As Integer
+    Dim intResto
     
-    'Verifica se tem 11 caracteres
-    If Not Len(CPF) = 11 Then
-        fCPF = False
+    'Verifica se tem 12 ou 14 dígitos
+    If Not (Len(CNPJ) = 12 Or Len(CNPJ) = 14) Then
         Exit Function
+        
+    Else
+        'Verifica se é numérico
+        If Not IsNumeric(CNPJ) Then
+            Exit Function
+            
+        Else
+            'Trunca o CNPJ em 12 caracteres
+            CNPJ = Left$(CNPJ, 12)
+            
+        End If
     End If
     
-    'Verifica se o dígito verificador confere
-    strChar = Mid$(CPF, 10, 2)
-    If fDigCPF(CPF) = strChar Then
-        fCPF = True
-    Else
-        fCPF = False
+Inicio:
+    'Percorre as colunas (de trás para frente),
+    'multiplicando por seus respectivos fatores
+    intFator = 2
+    intTotal = 0
+    For i = Len(CNPJ) To 1 Step -1
+    
+        If intFator > 9 Then intFator = 2
+        
+        intTotal = intTotal + ((CInt(Mid(CNPJ, i, 1)) * intFator))
+        intFator = intFator + 1
+    
+    Next i
+    
+    'Obtém o resto da divisão por 11
+    i = intTotal Mod 11
+    'Subtrai 11 do resto
+    i = 11 - i
+    'O dígito verificador é i
+    If i = 10 Or i = 11 Then i = 0
+    
+    'Concatena ao CNPJ
+    CNPJ = CNPJ & CStr(i)
+    
+    If Len(CNPJ) = 13 Then
+        'Calcula o segundo dígito
+        GoTo Inicio
+        
     End If
-
+    
+    'Retorna os dígitos verificadores
+    fDigCNPJ = Right$(CNPJ, 2)
+    
 End Function
