@@ -1,0 +1,35 @@
+Public Function ImportarCaminho() As String
+
+'================================
+'FUNÇÃO PARA RETONAR O PATH DE
+'QUALQUER ARQUIVO ATRAVES DE UMA
+'JANELA DE SELEÇÃO
+'================================
+    
+    Dim obj As FileDialog, strRetorno As String
+    
+    'buscar arquivo
+    Set obj = Application.FileDialog(msoFileDialogFilePicker) 'seta a variavel obj para abrir a janela de seleção de arquivos
+    
+    With obj
+    
+        .Title = "Selecione o Extrato Desejado" 'insira um titulo para a janela
+        .filters.Clear 'limpa os filtros padrões
+        .filters.Add "Texto", "*.txt" 'inseri o filtro indicado para arquivos com extenção .txt
+        
+        'Retorna o item selecionado
+        If .Show = -1 Then 'abre a janela
+            ImportarCaminho = obj.SelectedItems(1)
+            
+        Else
+        
+            MsgBox "Nenhum arquivo foi selecionado", vbInformation, "GCC"
+            End
+            
+        End If
+    
+    End With
+    
+    Set obj = Nothing
+
+End Function
