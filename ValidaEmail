@@ -1,0 +1,33 @@
+Function ValidaEmailTVG(Email As String) As Boolean
+ 
+    If InStr(Email, " ") Then
+    
+        MsgBox "Espaços não são permitidos para o campo de e-mail", vbCritical
+        Exit Function
+        
+    End If
+
+    With CreateObject("vbscript.regexp")
+    
+        If InStr(Email, "@tvglobo.com.br") Then 'sintaxe InStr, verifica se possui um determinado texto dentro da string
+        
+            .Pattern = "^[\w-\.]+@(tvglobo.com.br)"
+            
+        Else
+        
+            .Pattern = "^[\w-\.]+@(globo.com.br)"
+        
+        End If
+        
+        If Not .test(Email) Or (IsNull(Email)) Then
+           
+            MsgBox "Email inválido. Informe e-mail com @tvglobo.com.br or @globo.com.br", vbCritical, "GCC"
+            Cancel = True
+            Exit Function
+           
+        End If
+    End With
+    
+    VerificaEmailTVG = True
+
+End Function
