@@ -1,0 +1,26 @@
+Function WindowsLogin(ByVal strUserName As String, ByVal strpassword As String, ByVal strDomain As String) As Boolean
+    'Procedimento que autentica o login e a senha informada com o da rede.
+    
+    '****************
+    '   CUIDADO!!!
+    '****************
+    'Ao errar a senha pela 3° vez, o usuário será bloqueado!
+
+    On Error GoTo IncorrectPassword
+
+    Dim oADsObject, oADsNamespace As Object
+    Dim strADsPath As String
+
+    strADsPath = "LDAP://" & strDomain
+    Set oADsNamespace = GetObject("LDAP:")
+    Set oADsObject = oADsNamespace.OpenDSObject(strADsPath, strDomain & "\" & strUserName, strpassword, 0)
+
+    WindowsLogin = True    'ACESSO PERMITIDO
+
+ExitSub:
+    Exit Function
+
+IncorrectPassword:
+    WindowsLogin = False   'ACESSO NEGADO
+    Resume ExitSub
+End Function
