@@ -1,0 +1,28 @@
+Function Auto_Milhagem_Decimal(ByVal VALOR As String) As String
+    
+    Select Case Len(VALOR)
+
+        Case 3
+            VALOR = Left(VALOR, 1) & "," & Right(VALOR, Len(VALOR) - 1)
+        Case 4
+            VALOR = Left(VALOR, 2) & "," & Right(VALOR, 2)
+        Case 5
+            VALOR = Left(VALOR, 3) & "," & Right(VALOR, 2)
+        Case 6
+            VALOR = Left(VALOR, 1) & "." & Mid(VALOR, 2, 3) & "," & Right(VALOR, 2)
+        Case 7
+            VALOR = Left(VALOR, 2) & "." & Mid(VALOR, 3, 3) & "," & Right(VALOR, 2)
+        Case 8
+            VALOR = Left(VALOR, 3) & "." & Mid(VALOR, 4, 3) & "," & Right(VALOR, 2)
+        Case 9
+            VALOR = Left(VALOR, 1) & "." & Mid(VALOR, 2, 3) & "." & Mid(VALOR, 5, 3) & "," & Right(VALOR, 2)
+        Case 10
+            VALOR = Left(VALOR, 2) & "." & Mid(VALOR, 3, 3) & "." & Mid(VALOR, 6, 3) & "," & Right(VALOR, 2)
+        Case 11
+            VALOR = Left(VALOR, 3) & "." & Mid(VALOR, 4, 3) & "." & Mid(VALOR, 7, 3) & "," & Right(VALOR, 2)
+
+    End Select
+    
+    Auto_Milhagem_Decimal = VALOR
+    
+End Function
